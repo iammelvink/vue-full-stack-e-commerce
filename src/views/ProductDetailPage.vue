@@ -1,4 +1,5 @@
 <template>
+  <!-- v-if shows a product if that product id exists -->
   <div id="page-wrap" v-if="product">
     <div id="img-wrap">
       <img v-bind:src="product.imageUrl" />
@@ -12,19 +13,25 @@
       <p>{{ product.description }}</p>
     </div>
   </div>
+  <!-- v-else will display the NotFoundPage when product id does NOT exist -->
   <NotFoundPage v-else />
 </template>
 
 <script>
+// loading some fake/dummy data
 import { products } from "../fake-data";
 import NotFoundPage from "./NotFoundPage";
 export default {
   name: "ProductDetailPage",
+  // Register NotFoundPage
   components: {
     NotFoundPage,
   },
   data() {
     return {
+      // finds the id of the product
+      // and displays that specific product
+      // on the ProductDetailPage
       product: products.find((p) => p.id === this.$route.params.id),
     };
   },
@@ -32,6 +39,7 @@ export default {
 </script>
 
 <style scoped>
+/* scoped means css style will ONLY affect this file */
 #page-wrap {
   margin-top: 16px;
   padding: 16px;

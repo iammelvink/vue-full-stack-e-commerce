@@ -1,5 +1,6 @@
 <template>
   <div id="nav-bar">
+    <!-- creating routes for NavBar using router-link -->
     <router-link to="/products" id="products-link">
       <h1>FABULOUS FOOTWEAR</h1>
     </router-link>
@@ -15,7 +16,9 @@ export default {
 };
 </script>
 
+
 <style scoped>
+/* scoped means css style will ONLY affect this file */
 #nav-bar {
   border-bottom: 1px solid #ddd;
   height: 75px;

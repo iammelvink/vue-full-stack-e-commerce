@@ -9,6 +9,7 @@ export default {
 </script>
 
 <style scoped>
+/* scoped means css style will ONLY affect this file */
 h1 {
   text-align: center;
 }
