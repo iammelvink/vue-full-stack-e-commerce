@@ -21,8 +21,8 @@ export default {
   data() {
     return {
       product: products.find((p) => p.id === this.$route.params.id),
-    };
-  },
+    }
+  }
 };
 </script>
 
