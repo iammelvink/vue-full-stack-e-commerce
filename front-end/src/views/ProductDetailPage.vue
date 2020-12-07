@@ -18,8 +18,7 @@
 </template>
 
 <script>
-// loading some fake/dummy data
-import { products } from "../fake-data";
+import axios from "axios";
 import NotFoundPage from "./NotFoundPage";
 export default {
   name: "ProductDetailPage",
@@ -29,11 +28,27 @@ export default {
   },
   data() {
     return {
-      // finds the id of the product
-      // and displays that specific product
-      // on the ProductDetailPage
-      product: products.find((p) => p.id === this.$route.params.id),
+      /**
+       * finds the id of the product
+       * and displays that specific product
+       * on the ProductDetailPage
+       * initialize to an empty object
+       */
+      product: {},
     };
+  },
+  /**
+   * life cycle function
+   * will request data from backend
+   * when page loads
+   */
+  async created() {
+    // using back ticks for template strings
+    const result = await axios.get(`/api/products/${this.$route.params.id}`);
+    // loads product data from server
+    const product = result.data;
+    // set product in vue component to product from server
+    this.product = product;
   },
 };
 </script>

@@ -13,6 +13,7 @@ export default {
   },
   data() {
     return {
+      // initialize to an empty array
       products: [],
     };
   },

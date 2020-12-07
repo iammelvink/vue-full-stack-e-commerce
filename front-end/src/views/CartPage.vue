@@ -10,8 +10,7 @@
 </template>
 
 <script>
-// loading some fake/dummy data
-import { cartItems } from "../fake-data";
+import axios from "axios";
 import ProductsList from "../components/ProductsList.vue";
 export default {
   name: "CartPage",
@@ -21,16 +20,33 @@ export default {
   },
   data() {
     return {
-      cartItems,
+      // initialize to an empty array
+      cartItems: [],
     };
   },
-  // computed will refresh whenever a change that affects it occurs
+  // computed property will refresh whenever a change that affects it occurs
   computed: {
     totalPrice() {
       // Remember to convert to a Number
       // We initialize it to 0
       return this.cartItems.reduce((sum, item) => sum + Number(item.price), 0);
     },
+  },
+  /**
+   * life cycle function
+   * will request data from backend
+   * when page loads
+   */
+  async created() {
+    // using back ticks for template strings
+    // notice user id is hard coded in this example
+    const result = await axios.get("/api/users/12345/cart");
+    // this is for NOT hard coded user id
+    // const result = await axios.get(`/api/users/${this.$route.params.id}/cart`);
+    // loads cartItems data from server
+    const cartItems = result.data;
+    // set cartItems in vue component to cartItems from server
+    this.cartItems = cartItems;
   },
 };
 </script>
