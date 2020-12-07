@@ -153,6 +153,8 @@ app.post('/api/users/:userId/cart', async (req, res) => {
     const user = await db.collection('users').findOne({
         id: userId
     });
+    // load products from mongodb
+    const products = await db.collection('products').find({}).toArray();
     // get cart items for specific user
     const cartItemIds = user.cartItems;
     // map product id to actual product

@@ -8,8 +8,19 @@
       <h1>{{ product.name }}</h1>
       <h3 id="price">R{{ product.price }}</h3>
       <p>Average rating:{{ product.averageRating }}</p>
-      <!-- v-on:click invokes a desired method -->
-      <button id="add-to-cart" v-on:click="addToCart">Add to Cart</button>
+      <!-- v-on:click invokes a desired method
+      show only if item is NOT in cart -->
+      <button
+        id="add-to-cart"
+        v-on:click="addToCart"
+        v-if="!showSuccessMessage"
+      >
+        Add to Cart
+      </button>
+      <!-- show only if item is in cart -->
+      <button id="add-to-cart" class="green-button" v-if="showSuccessMessage">
+        Successfully added item to cart
+      </button>
       <h4>Description</h4>
       <p>{{ product.description }}</p>
     </div>
@@ -36,6 +47,7 @@ export default {
        * initialize to an empty object
        */
       product: {},
+      showSuccessMessage: false,
     };
   },
   // to call methods from within vue template
@@ -48,6 +60,12 @@ export default {
       await axios.post("/api/users/12345/cart", {
         productId: this.$route.params.id,
       });
+      // set showSuccessMessage to true after adding item to cart
+      this.showSuccessMessage = true;
+      // redirect user to products page after 1000 milliseconds
+      setTimeout(() => {
+        this.$route.push("/products");
+      }, 1000);
     },
   },
   /**
@@ -95,5 +113,8 @@ img {
   position: absolute;
   top: 24px;
   right: 16px;
+}
+.green-button {
+  background-color: green;
 }
 </style>
