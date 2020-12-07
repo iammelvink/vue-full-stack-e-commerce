@@ -10,7 +10,17 @@
     just represents symbol for the South African currency -->
       <p>R{{ product.price }}</p>
     </div>
-    <button class="remove-button">Remove From Cart</button>
+    <!-- $emit function allows the component to emit its event
+     to some other component
+     Then gets product id
+     Then allows the button to bubble the custom remove-from-cart event
+    to some other component -->
+    <button
+      class="remove-button"
+      v-on:click="$emit('remove-from-cart', product.id)"
+    >
+      Remove From Cart
+    </button>
   </div>
 </template>
 

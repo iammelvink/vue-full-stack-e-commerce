@@ -2,8 +2,14 @@
   <div id="page-wrap">
     <h1>Shopping Cart</h1>
     <!-- loading specific data using v-bind
-    from products prop -->
-    <ProductsList v-bind:products="cartItems" />
+    from products prop
+    v-on:remove-from-cart="removeFromCart($event)"
+    listens for our custom `remove-from-cart` event
+    Then $event gets us the product id-->
+    <ProductsList
+      v-bind:products="cartItems"
+      v-on:remove-from-cart="removeFromCart($event)"
+    />
     <h3 id="total-price">Total: R{{ totalPrice }}</h3>
     <button id="checkout-button">Proceed to Checkout</button>
   </div>
@@ -30,6 +36,18 @@ export default {
       // Remember to convert to a Number
       // We initialize it to 0
       return this.cartItems.reduce((sum, item) => sum + Number(item.price), 0);
+    },
+  },
+  methods: {
+    // method to delete item from a users  cart
+    async removeFromCart(productId) {
+      // notice user id is hard coded in this example
+      // this is for NOT hard coded user id
+      // using back ticks for template strings
+      // const result = await axios.delete(`/api/users/${this.$route.params.id}/cart/${productId}`);
+      const result = await axios.delete(`/api/users/12345/cart/${productId}`);
+      // update cart items
+      this.cartItems = result.data;
     },
   },
   /**
