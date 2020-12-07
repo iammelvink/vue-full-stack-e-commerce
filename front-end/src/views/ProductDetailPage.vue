@@ -8,7 +8,8 @@
       <h1>{{ product.name }}</h1>
       <h3 id="price">R{{ product.price }}</h3>
       <p>Average rating:{{ product.averageRating }}</p>
-      <button id="add-to-cart">Add to Cart</button>
+      <!-- v-on:click invokes a desired method -->
+      <button id="add-to-cart" v-on:click="addToCart">Add to Cart</button>
       <h4>Description</h4>
       <p>{{ product.description }}</p>
     </div>
@@ -36,6 +37,18 @@ export default {
        */
       product: {},
     };
+  },
+  // to call methods from within vue template
+  methods: {
+    async addToCart() {
+      // this is for NOT hard coded user id
+      // using back ticks for template strings
+      // await axios.post(`/api/users/${this.$route.params.id}/cart`);
+      // notice user id is hard coded in this example
+      await axios.post("/api/users/12345/cart", {
+        productId: this.$route.params.id,
+      });
+    },
   },
   /**
    * life cycle function

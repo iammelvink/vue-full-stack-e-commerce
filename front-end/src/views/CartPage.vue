@@ -38,10 +38,10 @@ export default {
    * when page loads
    */
   async created() {
-    // using back ticks for template strings
     // notice user id is hard coded in this example
     const result = await axios.get("/api/users/12345/cart");
     // this is for NOT hard coded user id
+    // using back ticks for template strings
     // const result = await axios.get(`/api/users/${this.$route.params.id}/cart`);
     // loads cartItems data from server
     const cartItems = result.data;
