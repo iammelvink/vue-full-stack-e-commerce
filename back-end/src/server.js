@@ -142,7 +142,7 @@ app.get('/hello/:name', (req, res) => {
 /**
  * '/hello' routes are just for reference
  */
-
+// get end point for products
 app.get('/api/products', async (req, res) => {
     // connecting to mongodb database using MongoClient
     const client = await MongoClient.connect('mongodb://localhost:27017', {
@@ -159,6 +159,7 @@ app.get('/api/products', async (req, res) => {
     client.close();
 });
 
+// get end point for user cart per user id
 // Looking for the cart of a specific user
 // :userId is a url parameter
 app.get('/api/users/:userId/cart', async (req, res) => {
@@ -190,6 +191,7 @@ app.get('/api/users/:userId/cart', async (req, res) => {
     client.close();
 });
 
+// get end point for product per product id
 // Looking for a product of a specific product id
 // :productId is a url parameter
 app.get('/api/products/:productId', async (req, res) => {
@@ -217,6 +219,7 @@ app.get('/api/products/:productId', async (req, res) => {
     client.close();
 });
 
+// post end point for user cart per user id
 // Adding products to users cart 
 // :userId is a url parameter
 app.post('/api/users/:userId/cart', async (req, res) => {
@@ -258,17 +261,55 @@ app.post('/api/users/:userId/cart', async (req, res) => {
     client.close();
 });
 
+/**
+ * delete end point
+ for products from user cart
+ per user id and per product id
+ */
 // Deleting products from users cart,
 // using filter function
 // :userId and :productId are url parameters
-app.delete('/api/users/:userId/cart/:productId', (req, res) => {
+app.delete('/api/users/:userId/cart/:productId', async (req, res) => {
     const {
+        userId,
         productId
     } = req.params;
-    cartItems = cartItems.filter((product) => product.id !== productId)
+    // connecting to mongodb database using MongoClient
+    const client = await MongoClient.connect('mongodb://localhost:27017', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    });
+    // connect to specific db
+    const db = client.db('vue-db');
+    // deleting cart items by using an update query
+    await db.collection('users').updateOne({
+        id: userId
+    }, {
+        /**
+         * pull product id from cart items
+         * deleting product id from users cart item array
+         */
+        $pull: {
+            cartItems: productId
+        },
+    });
+    // send updated array of users products to the client
+    const user = await db.collection('users').findOne({
+        id: userId
+    });
+    // load products from mongodb
+    const products = await db.collection('products').find({}).toArray();
+    // get ids of cart items
+    const cartItemIds = user.cartItems;
+    // map product id to actual product
+    const cartItems = cartItemIds.map(id => products.find(product => product.id === id));
+    // send cart items to user
     res.status(200).json(cartItems);
+    // closes connection to database
+    client.close();
 });
 
+// port that server listens on = port 8000
 app.listen(8000, () => {
     console.log('Server is listening on port 8000');
 })
