@@ -1,5 +1,11 @@
+// to create a server
 import express from 'express';
+// to parse body content because node cannot do that on its own
 import bodyParser from 'body-parser';
+// to connect to mongodb database
+import {
+    MongoClient
+} from 'mongodb';
 
 /**
  * loading a so called database using json data
@@ -137,8 +143,19 @@ app.get('/hello/:name', (req, res) => {
  * '/hello' routes are just for reference
  */
 
-app.get('/api/products', (req, res) => {
+app.get('/api/products', async (req, res) => {
+    // connecting to mongodb database using MongoClient
+    const client = await MongoClient.connect('mongodb://localhost:27017', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    });
+    // connect to specific db
+    const db = client.db('vue-db');
+    // pull data from specific collection
+    // and convert to an array
+    const products = await db.collection('products').find({}).toArray();
     res.status(200).json(products);
+    client.close();
 });
 
 // Looking for the cart of a specific user

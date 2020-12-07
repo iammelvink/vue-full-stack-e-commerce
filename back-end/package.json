@@ -7,8 +7,8 @@
     "dev": "npx nodemon --exec npx babel-node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["nodejs", "express", "mongodb", "server", "e-commerce"],
+  "author": "Melvin Kisten",
   "license": "GPL-2.0",
   "dependencies": {
     "@babel/runtime": "^7.12.5",

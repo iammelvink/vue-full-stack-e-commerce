@@ -1,4 +1,4 @@
-# fsv-front-end
+# front-end
 
 ## Project setup
 ```
