@@ -2,7 +2,7 @@
 
 ## Repository for my vue-full-stack-ecommerce project
 
-Find out how to build an e-commerce platform. Author Melvin Kisten tackles CRUD functions and connects the system to a database of MongoDB (Document database), using NodeJS and for the front end, VueJS.
+Find out how to build an e-commerce platform. Author Melvin Kisten tackles CRUD functions and connects the system to a database of MongoDB (Document database). Created a full-stack platform using JavaScript. The front-end was created using VueJS and the back-end was created using NodeJS, Express, MongoDB. Then I used Axios to link my back-end with my front-end. I also used Postman to test my end points. 
 
 1. Methodologies/Project Management:
 
@@ -16,7 +16,10 @@ Find out how to build an e-commerce platform. Author Melvin Kisten tackles CRUD 
 3. Programming Languages/Frameworks:
    - JavaScript
    - NodeJS
-   - VueJS
+   - Express
+   - MongoDB
+   - Postman
+   - Axios
 
 ## Info (Still loading...)
 
