@@ -155,44 +155,107 @@ app.get('/api/products', async (req, res) => {
     // and convert to an array
     const products = await db.collection('products').find({}).toArray();
     res.status(200).json(products);
+    // closes connection to database
     client.close();
 });
 
 // Looking for the cart of a specific user
 // :userId is a url parameter
-app.get('/api/users/:userId/cart', (req, res) => {
+app.get('/api/users/:userId/cart', async (req, res) => {
+    // get the user id
+    const {
+        userId
+    } = req.params;
+    // connecting to mongodb database using MongoClient
+    const client = await MongoClient.connect('mongodb://localhost:27017', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    });
+    // connect to specific db
+    const db = client.db('vue-db');
+    // find one user by id
+    const user = await db.collection('users').findOne({
+        id: userId
+    });
+    // check if user exists
+    if (!user) return res.status(404).json('Could not find the user!');
+    // get all products from the database
+    const products = await db.collection('products').find({}).toArray();
+    // getting cart item ids of specific user
+    const cartItemIds = user.cartItems;
+    // get the products by the ids from the cart item ids
+    const cartItems = cartItemIds.map(id => products.find(product => product.id === id));
     res.status(200).json(cartItems);
+    // closes connection to database
+    client.close();
 });
 
 // Looking for a product of a specific product id
 // :productId is a url parameter
-app.get('/api/products/:productId', (req, res) => {
+app.get('/api/products/:productId', async (req, res) => {
     const {
         productId
     } = req.params;
-    const product = products.find((product) => product.id === productId);
+    // connecting to mongodb database using MongoClient
+    const client = await MongoClient.connect('mongodb://localhost:27017', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    });
+    // connect to specific db
+    const db = client.db('vue-db');
+    // load product from database
+    const product = await db.collection('products').findOne({
+        id: productId
+    });
     // Check if product exists
     if (product) {
         res.status(200).json(product);
     } else {
         res.status(404).json('Could not find the product!');
     }
+    // closes connection to database
+    client.close();
 });
 
 // Adding products to users cart 
 // :userId is a url parameter
-app.post('/api/users/:userId/cart', (req, res) => {
+app.post('/api/users/:userId/cart', async (req, res) => {
+    // getting user id
+    const {
+        userId
+    } = req.params;
+    // getting product id
     const {
         productId
     } = req.body;
-    const product = products.find((product) => product.id === productId);
-    // Check if product exists in cart
-    if (product) {
-        cartItems.push(product);
-        res.status(200).json(cartItems);
-    } else {
-        res.status(404).json('Could not find the product!');
-    }
+    // connecting to mongodb database using MongoClient
+    const client = await MongoClient.connect('mongodb://localhost:27017', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    });
+    // connect to specific db
+    const db = client.db('vue-db');
+    // update user
+    await db.collection('users').updateOne({
+        id: userId
+    }, {
+        // $addToSet add product WITHOUT duplicates
+        $addToSet: {
+            cartItems: productId
+        },
+    });
+    // get updated user
+    const user = await db.collection('users').findOne({
+        id: userId
+    });
+    // get cart items for specific user
+    const cartItemIds = user.cartItems;
+    // map product id to actual product
+    const cartItems = cartItemIds.map(id => products.find(product => product.id === id));
+    // send cart items to user
+    res.status(200).json(cartItems);
+    // closes connection to database
+    client.close();
 });
 
 // Deleting products from users cart,
