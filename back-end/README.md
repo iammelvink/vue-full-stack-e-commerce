@@ -1,6 +1,6 @@
 # back-end
 
-## Project setup
+## Project setup (running on port 8000)
 ```
 > cd back-end
 ```

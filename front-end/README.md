@@ -1,6 +1,6 @@
 # front-end
 
-## Project setup
+## Project setup (running on port 8080)
 ```
 > cd front-end
 ```

@@ -4,15 +4,29 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "babel ./src --out-dir ./build",
+    "start": "node ./build/server.js",
     "dev": "npx nodemon --exec npx babel-node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": ["nodejs", "express", "mongodb", "server", "e-commerce"],
+  "engines": {
+    "node": "14.15.1",
+    "npm": "6.14.8"
+  },
+  "keywords": [
+    "nodejs",
+    "express",
+    "mongodb",
+    "axios",
+    "server",
+    "e-commerce"
+  ],
   "author": "Melvin Kisten",
   "license": "GPL-2.0",
   "dependencies": {
     "@babel/runtime": "^7.12.5",
     "body-parser": "^1.19.0",
+    "connect-history-api-fallback": "^1.6.0",
     "express": "^4.17.1",
     "mongodb": "^3.6.3"
   },
