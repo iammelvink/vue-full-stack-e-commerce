@@ -10,7 +10,6 @@ Find out how to build an e-commerce platform. Author Melvin Kisten tackles CRUD 
 
 2. Coding Practices:
 
-   - MVC (Model View Controller)
    - OOP (Object Oriented Programming)
 
 3. Programming Languages/Frameworks:
