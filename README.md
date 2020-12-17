@@ -64,12 +64,38 @@ Find out how to build an e-commerce platform. Author Melvin Kisten tackles CRUD 
    > npm install
    ```
 
-   Compiles and hot-reloads for development
+5. Insert data into the MongoDB database
+   - Start MongoDB server
+      ```
+      > mongod
+      ```
+
+   - Enter mongo shell
+      ```
+      > mongo
+      ```
+
+   - Insert data into the MongoDB database
+      ```
+      > db.products.insertMany([{ 
+         id :"123",
+         name :"Skateboard Shoes",
+         price :"75.00",
+         description :"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel enim ...",
+         imageUrl :"",
+         averageRating :"5.0" }])
+      ```
+
+      ```
+      > db.users.insertOne({ id: '00001', cartItems: [ '123' ] })
+      ```
+
+6. Compiles and hot-reloads for development
    ```
    > npm run dev
    ```
 
-5. Enjoy!
+7. Enjoy!
 
 ## Deploy for production
 
@@ -116,11 +142,17 @@ Find out how to build an e-commerce platform. Author Melvin Kisten tackles CRUD 
    Inserting data into remote MongoDB database
 
    ```
-   > db.products.insertMany([{}])
+   > db.products.insertMany([{ 
+      id :"123",
+      name :"Skateboard Shoes",
+      price :"75.00",
+      description :"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed vel enim ...",
+      imageUrl :"",
+      averageRating :"5.0" }])
    ```
 
    ```
-   > db.users.insertOne({ id: '00001', cartItems: [ '001', '002', '003', ] })
+   > db.users.insertOne({ id: '00001', cartItems: [ '123' ] })
    ```
 
    Heroku:
