@@ -4,7 +4,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 // to connect to mongodb database
 import {
-    MongoClient
+  MongoClient
 } from 'mongodb';
 import path from 'path';
 /**
@@ -26,8 +26,8 @@ app.use('/images', express.static(path.join(__dirname, '../assets')));
  * For live production hosting
  */
 app.use(express.static(path.resolve(__dirname, '../dist'), {
-    maxAge: '1y',
-    etag: false
+  maxAge: '1y',
+  etag: false
 }));
 app.use(history());
 
@@ -41,36 +41,37 @@ res = response >
 res.send sends back a response to our request
 */
 app.get('/hello', (req, res) => {
-    res.send('Hello!');
+  res.send('Hello!');
 });
 
 app.post('/hello', (req, res) => {
-    // using back ticks
-    res.send(`Hello ${req.body.name}`)
+  // using back ticks
+  res.send(`Hello ${req.body.name}`)
 });
 
 // :name is a url parameter
 app.get('/hello/:name', (req, res) => {
-    // using back ticks
-    res.send(`Hello ${req.params.name}`);
+  // using back ticks
+  res.send(`Hello ${req.params.name}`);
 });
 /**
  * '/hello' routes are just for reference
  */
 // get end point for products
 app.get('/api/products', async (req, res) => {
+  try {
     // connecting to mongodb database using MongoClient
     const client = await MongoClient.connect(
-        // DO NOT hard code credentials
-        // Use environment variables
-        // Also check if they exist
-        // Else use localhost
-        process.env.MONGO_USER && process.env.MONGO_PASS ?
-        `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.yalnp.mongodb.net/${process.env.MONGO_DBNAME}?retryWrites=true&w=majority` :
-        'mongodb://localhost:27017', {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
+      // DO NOT hard code credentials
+      // Use environment variables
+      // Also check if they exist
+      // Else use localhost
+      process.env.MONGO_USER && process.env.MONGO_PASS ?
+      `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.yalnp.mongodb.net/${process.env.MONGO_DBNAME}?retryWrites=true&w=majority` :
+      'mongodb://localhost:27017', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      });
     // connect to specific db
     // Check if environment variable MONGO_DBNAME is set
     // Else use local db
@@ -81,34 +82,42 @@ app.get('/api/products', async (req, res) => {
     res.status(200).json(products);
     // closes connection to database
     client.close();
+  } catch (error) {
+    // 500 = internal server error
+    res.status(500).json({
+      message: 'Error connecting to db',
+      error
+    });
+  }
 });
 
 // get end point for user cart per user id
 // Looking for the cart of a specific user
 // :userId is a url parameter
 app.get('/api/users/:userId/cart', async (req, res) => {
-    // get the user id
-    const {
-        userId
-    } = req.params;
+  // get the user id
+  const {
+    userId
+  } = req.params;
+  try {
     // connecting to mongodb database using MongoClient
     const client = await MongoClient.connect( // DO NOT hard code credentials
-        // Use environment variables
-        // Also check if they exist
-        // Else use localhost
-        process.env.MONGO_USER && process.env.MONGO_PASS ?
-        `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.yalnp.mongodb.net/${process.env.MONGO_DBNAME}?retryWrites=true&w=majority` :
-        'mongodb://localhost:27017', {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
+      // Use environment variables
+      // Also check if they exist
+      // Else use localhost
+      process.env.MONGO_USER && process.env.MONGO_PASS ?
+      `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.yalnp.mongodb.net/${process.env.MONGO_DBNAME}?retryWrites=true&w=majority` :
+      'mongodb://localhost:27017', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      });
     // connect to specific db
     // Check if environment variable MONGO_DBNAME is set
     // Else use local db
     const db = client.db(process.env.MONGO_DBNAME || 'vue-db');
     // find one user by id
     const user = await db.collection('users').findOne({
-        id: userId
+      id: userId
     });
     // check if user exists
     if (!user) return res.status(404).json('Could not find the user!');
@@ -121,83 +130,100 @@ app.get('/api/users/:userId/cart', async (req, res) => {
     res.status(200).json(cartItems);
     // closes connection to database
     client.close();
+  } catch (error) {
+    // 500 = internal server error
+    res.status(500).json({
+      message: 'Error connecting to db',
+      error
+    });
+  }
 });
 
 // get end point for product per product id
 // Looking for a product of a specific product id
 // :productId is a url parameter
 app.get('/api/products/:productId', async (req, res) => {
-    const {
-        productId
-    } = req.params;
+  const {
+    productId
+  } = req.params;
+
+  try {
     // connecting to mongodb database using MongoClient
     const client = await MongoClient.connect( // DO NOT hard code credentials
-        // Use environment variables
-        // Also check if they exist
-        // Else use localhost
-        process.env.MONGO_USER && process.env.MONGO_PASS ?
-        `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.yalnp.mongodb.net/${process.env.MONGO_DBNAME}?retryWrites=true&w=majority` :
-        'mongodb://localhost:27017', {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
+      // Use environment variables
+      // Also check if they exist
+      // Else use localhost
+      process.env.MONGO_USER && process.env.MONGO_PASS ?
+      `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.yalnp.mongodb.net/${process.env.MONGO_DBNAME}?retryWrites=true&w=majority` :
+      'mongodb://localhost:27017', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      });
     // connect to specific db
     // Check if environment variable MONGO_DBNAME is set
     // Else use local db
     const db = client.db(process.env.MONGO_DBNAME || 'vue-db');
     // load product from database
     const product = await db.collection('products').findOne({
-        id: productId
+      id: productId
     });
     // Check if product exists
     if (product) {
-        res.status(200).json(product);
+      res.status(200).json(product);
     } else {
-        res.status(404).json('Could not find the product!');
+      res.status(404).json('Could not find the product!');
     }
     // closes connection to database
     client.close();
+  } catch (error) {
+    // 500 = internal server error
+    res.status(500).json({
+      message: 'Error connecting to db',
+      error
+    });
+  }
 });
 
 // post end point for user cart per user id
 // Adding products to users cart 
 // :userId is a url parameter
 app.post('/api/users/:userId/cart', async (req, res) => {
-    // getting user id
-    const {
-        userId
-    } = req.params;
-    // getting product id
-    const {
-        productId
-    } = req.body;
+  // getting user id
+  const {
+    userId
+  } = req.params;
+  // getting product id
+  const {
+    productId
+  } = req.body;
+  try {
     // connecting to mongodb database using MongoClient
     const client = await MongoClient.connect( // DO NOT hard code credentials
-        // Use environment variables
-        // Also check if they exist
-        // Else use localhost
-        process.env.MONGO_USER && process.env.MONGO_PASS ?
-        `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.yalnp.mongodb.net/${process.env.MONGO_DBNAME}?retryWrites=true&w=majority` :
-        'mongodb://localhost:27017', {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
+      // Use environment variables
+      // Also check if they exist
+      // Else use localhost
+      process.env.MONGO_USER && process.env.MONGO_PASS ?
+      `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.yalnp.mongodb.net/${process.env.MONGO_DBNAME}?retryWrites=true&w=majority` :
+      'mongodb://localhost:27017', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      });
     // connect to specific db
     // Check if environment variable MONGO_DBNAME is set
     // Else use local db
     const db = client.db(process.env.MONGO_DBNAME || 'vue-db');
     // update user
     await db.collection('users').updateOne({
-        id: userId
+      id: userId
     }, {
-        // $addToSet add product WITHOUT duplicates
-        $addToSet: {
-            cartItems: productId
-        },
+      // $addToSet add product WITHOUT duplicates
+      $addToSet: {
+        cartItems: productId
+      },
     });
     // get updated user
     const user = await db.collection('users').findOne({
-        id: userId
+      id: userId
     });
     // load products from mongodb
     const products = await db.collection('products').find({}).toArray();
@@ -209,6 +235,13 @@ app.post('/api/users/:userId/cart', async (req, res) => {
     res.status(200).json(cartItems);
     // closes connection to database
     client.close();
+  } catch (error) {
+    // 500 = internal server error
+    res.status(500).json({
+      message: 'Error connecting to db',
+      error
+    });
+  }
 });
 
 /**
@@ -220,40 +253,42 @@ app.post('/api/users/:userId/cart', async (req, res) => {
 // using filter function
 // :userId and :productId are url parameters
 app.delete('/api/users/:userId/cart/:productId', async (req, res) => {
-    const {
-        userId,
-        productId
-    } = req.params;
+  const {
+    userId,
+    productId
+  } = req.params;
+
+  try {
     // connecting to mongodb database using MongoClient
     const client = await MongoClient.connect( // DO NOT hard code credentials
-        // Use environment variables
-        // Also check if they exist
-        // Else use localhost
-        process.env.MONGO_USER && process.env.MONGO_PASS ?
-        `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.yalnp.mongodb.net/${process.env.MONGO_DBNAME}?retryWrites=true&w=majority` :
-        'mongodb://localhost:27017', {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
+      // Use environment variables
+      // Also check if they exist
+      // Else use localhost
+      process.env.MONGO_USER && process.env.MONGO_PASS ?
+      `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.yalnp.mongodb.net/${process.env.MONGO_DBNAME}?retryWrites=true&w=majority` :
+      'mongodb://localhost:27017', {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      });
     // connect to specific db
     // Check if environment variable MONGO_DBNAME is set
     // Else use local db
     const db = client.db(process.env.MONGO_DBNAME || 'vue-db');
     // deleting cart items by using an update query
     await db.collection('users').updateOne({
-        id: userId
+      id: userId
     }, {
-        /**
-         * pull product id from cart items
-         * deleting product id from users cart item array
-         */
-        $pull: {
-            cartItems: productId
-        },
+      /**
+       * pull product id from cart items
+       * deleting product id from users cart item array
+       */
+      $pull: {
+        cartItems: productId
+      },
     });
     // send updated array of users products to the client
     const user = await db.collection('users').findOne({
-        id: userId
+      id: userId
     });
     // load products from mongodb
     const products = await db.collection('products').find({}).toArray();
@@ -265,6 +300,13 @@ app.delete('/api/users/:userId/cart/:productId', async (req, res) => {
     res.status(200).json(cartItems);
     // closes connection to database
     client.close();
+  } catch (error) {
+    // 500 = internal server error
+    res.status(500).json({
+      message: 'Error connecting to db',
+      error
+    });
+  }
 });
 
 /**
@@ -273,11 +315,11 @@ app.delete('/api/users/:userId/cart/:productId', async (req, res) => {
  * to ../dist/index.html
  */
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../dist/index.html'));
+  res.sendFile(path.join(__dirname, '../dist/index.html'));
 })
 
 // port that server listens on = port 8000
 // Use environment variable or port 8000
 app.listen(process.env.PORT || 8000, () => {
-    console.log('Server is listening on port 8000');
+  console.log('Server is listening on port 8000');
 })

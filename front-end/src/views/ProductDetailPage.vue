@@ -91,7 +91,7 @@ export default {
       this.showSuccessMessage = true;
       // redirect user to products page after 1000 milliseconds
       setTimeout(() => {
-        this.$route.push("/products");
+        this.$router.push("/products");
       }, 1000);
     },
   },

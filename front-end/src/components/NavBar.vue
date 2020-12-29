@@ -2,7 +2,7 @@
   <div id="nav-bar">
     <!-- creating routes for NavBar using router-link -->
     <router-link to="/products" id="products-link">
-      <h1>FABULOUS FOOTWEAR</h1>
+      <h1>Footwear City</h1>
     </router-link>
     <router-link to="/cart" id="cart-link">
       <button>Shopping Cart</button>

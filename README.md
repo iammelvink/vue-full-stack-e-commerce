@@ -1,8 +1,8 @@
-# vue-full-stack-ecommerce
+# vue-full-stack-e-commerce
 
-## Repository for my vue-full-stack-ecommerce project
+## Repository for my vue-full-stack-e-commerce project
 
-Find out how to build an e-commerce platform. Author Melvin Kisten tackles CRUD functions and connects the system to a database of MongoDB (Document database). Created a full-stack platform using JavaScript. The front-end was created using VueJS and the back-end was created using NodeJS, Express, MongoDB. Then I used Axios to link my back-end with my front-end. I also used Postman to test my end points. 
+Find out how to build an e-commerce platform. Author Melvin Kisten tackles CRUD functions and connects the system to a database of MongoDB (Document database). Created a full-stack platform using JavaScript. The front-end was created using VueJS and the back-end was created using NodeJS, Vue, Express, MongoDB. Then I used Axios to link my back-end with my front-end. I also used Postman to test my end points. 
 
 1. Methodologies/Project Management:
 
@@ -14,6 +14,7 @@ Find out how to build an e-commerce platform. Author Melvin Kisten tackles CRUD 
 
 3. Programming Languages/Frameworks:
    - JavaScript
+   - Vue
    - NodeJS
    - Express
    - MongoDB
@@ -29,7 +30,7 @@ Find out how to build an e-commerce platform. Author Melvin Kisten tackles CRUD 
 1. Make sure you have these installed
 
    - [NodeJS](https://nodejs.org/en/download/ "NodeJS")
-      - I used node version 14.15.1 and npm version 6.14.8 at time of creation
+      - I used node version 14.15.3 and npm version 6.14.9 at time of creation
    - [MongoDB](https://www.mongodb.com/try/download/community "MongoDB")
       - I used mongo version 4.4.1 at time of creation
    - [Postman](https://www.postman.com/downloads/ "Postman")
@@ -86,8 +87,14 @@ Find out how to build an e-commerce platform. Author Melvin Kisten tackles CRUD 
          averageRating :"5.0" }])
       ```
 
+      OR
+      
       ```
-      > db.users.insertOne({ id: '00001', cartItems: [ '123' ] })
+         imageUrl :"/images/shoes-5.jpg",
+      ```
+
+      ```
+      > db.users.insertOne({ id: '12345', cartItems: [ '123' ] })
       ```
 
 6. Compiles and hot-reloads for development
@@ -151,8 +158,14 @@ Find out how to build an e-commerce platform. Author Melvin Kisten tackles CRUD 
       averageRating :"5.0" }])
    ```
 
+   OR
+      
+      ```
+         imageUrl :"/images/shoes-5.jpg",
+      ```
+
    ```
-   > db.users.insertOne({ id: '00001', cartItems: [ '123' ] })
+   > db.users.insertOne({ id: '12345', cartItems: [ '123' ] })
    ```
 
    Heroku:
